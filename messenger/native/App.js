@@ -1,21 +1,26 @@
 import {
-  StyleSheet,
-  View,
   Alert,
+  BackHandler,
   Image,
+  StyleSheet,
   TouchableHighlight,
-  BackHandler
+  View
 } from "react-native";
 import React from "react";
-import Status from "./components/Status";
-import MessageList from "./components/MessageList";
-import Toolbar from "./components/Toolbar";
-import ImageGrid from "./components/ImageGrid";
 import {
   createImageMessage,
   createLocationMessage,
   createTextMessage
 } from "./utils/MessageUtils";
+import ImageGrid from "./components/ImageGrid";
+import KeyboardState from "./components/KeyboardState";
+import MeasureLayout from "./components/MeasureLayout";
+import MessageList from "./components/MessageList";
+import MessagingContainer, {
+  INPUT_METHOD
+} from "./components/MessagingContainer";
+import Status from "./components/Status";
+import Toolbar from "./components/Toolbar";
 
 export default class App extends React.Component {
   state = {
@@ -29,7 +34,8 @@ export default class App extends React.Component {
       })
     ],
     fullscreenImageId: null,
-    isInputFocused: false
+    isInputFocused: false,
+    inputMethod: INPUT_METHOD.NONE
   };
 
   componentWillMount() {
@@ -37,10 +43,12 @@ export default class App extends React.Component {
       "hardwareBackPress",
       () => {
         const { fullscreenImageId } = this.state;
+
         if (fullscreenImageId) {
           this.dismissFullscreenImage();
           return true;
         }
+
         return false;
       }
     );
@@ -49,6 +57,61 @@ export default class App extends React.Component {
   componentWillUnmount() {
     this.subscription.remove();
   }
+
+  dismissFullscreenImage = () => {
+    this.setState({ fullscreenImageId: null });
+  };
+
+  handlePressToolbarCamera = () => {
+    this.setState({
+      isInputFocused: false,
+      inputMethod: INPUT_METHOD.CUSTOM
+    });
+  };
+
+  handlePressToolbarLocation = () => {
+    const { messages } = this.state;
+
+    navigator.geolocation.getCurrentPosition(position => {
+      const {
+        coords: { latitude, longitude }
+      } = position;
+
+      this.setState({
+        messages: [
+          createLocationMessage({
+            latitude,
+            longitude
+          }),
+          ...messages
+        ]
+      });
+    });
+  };
+
+  handlePressImage = uri => {
+    const { messages } = this.state;
+
+    this.setState({
+      messages: [createImageMessage(uri), ...messages]
+    });
+  };
+
+  handleSubmit = text => {
+    const { messages } = this.state;
+
+    this.setState({
+      messages: [createTextMessage(text), ...messages]
+    });
+  };
+
+  handleChangeFocus = isFocused => {
+    this.setState({ isInputFocused: isFocused });
+  };
+
+  handleChangeInputMethod = inputMethod => {
+    this.setState({ inputMethod });
+  };
 
   handlePressMessage = ({ id, type }) => {
     switch (type) {
@@ -85,43 +148,6 @@ export default class App extends React.Component {
     }
   };
 
-  dismissFullscreenImage = () => {
-    this.setState({ fullscreenImageId: null });
-  };
-
-  handlePressToolbarCamera = () => {
-    // ...
-  };
-
-  handlePressToolbarLocation = () => {
-    const { messages } = this.state;
-    navigator.geolocation.getCurrentPosition(position => {
-      const {
-        coords: { latitude, longitude }
-      } = position;
-      this.setState({
-        messages: [
-          createLocationMessage({
-            latitude,
-            longitude
-          }),
-          ...messages
-        ]
-      });
-    });
-  };
-
-  handleChangeFocus = isFocused => {
-    this.setState({ isInputFocused: isFocused });
-  };
-
-  handleSubmit = text => {
-    const { messages } = this.state;
-    this.setState({
-      messages: [createTextMessage(text), ...messages]
-    });
-  };
-
   renderMessageList() {
     const { messages } = this.state;
 
@@ -135,21 +161,9 @@ export default class App extends React.Component {
     );
   }
 
-  handlePressImage = uri => {
-    const { messages } = this.state;
-    this.setState({
-      messages: [createImageMessage(uri), ...messages]
-    });
-  };
-
-  renderInputMethodEditor = () => (
-    <View style={styles.inputMethodEditor}>
-      <ImageGrid onPressImage={this.handlePressImage} />
-    </View>
-  );
-
   renderToolbar() {
     const { isInputFocused } = this.state;
+
     return (
       <View style={styles.toolbar}>
         <Toolbar
@@ -163,12 +177,23 @@ export default class App extends React.Component {
     );
   }
 
+  renderInputMethodEditor = () => (
+    <View style={styles.inputMethodEditor}>
+      <ImageGrid onPressImage={this.handlePressImage} />
+    </View>
+  );
+
   renderFullscreenImage = () => {
     const { messages, fullscreenImageId } = this.state;
+
     if (!fullscreenImageId) return null;
+
     const image = messages.find(message => message.id === fullscreenImageId);
+
     if (!image) return null;
+
     const { uri } = image;
+
     return (
       <TouchableHighlight
         style={styles.fullscreenOverlay}
@@ -180,12 +205,28 @@ export default class App extends React.Component {
   };
 
   render() {
+    const { inputMethod } = this.state;
+
     return (
       <View style={styles.container}>
         <Status />
-        {this.renderMessageList()}
-        {this.renderToolbar()}
-        {this.renderInputMethodEditor()}
+        <MeasureLayout>
+          {layout => (
+            <KeyboardState layout={layout}>
+              {keyboardInfo => (
+                <MessagingContainer
+                  {...keyboardInfo}
+                  inputMethod={inputMethod}
+                  onChangeInputMethod={this.handleChangeInputMethod}
+                  renderInputMethodEditor={this.renderInputMethodEditor}
+                >
+                  {this.renderMessageList()}
+                  {this.renderToolbar()}
+                </MessagingContainer>
+              )}
+            </KeyboardState>
+          )}
+        </MeasureLayout>
         {this.renderFullscreenImage()}
       </View>
     );

@@ -11,7 +11,7 @@ import { MapView } from "expo";
 
 const keyExtractor = item => item.id.toString();
 
-export default class MessageList extends React.Component {
+class MessageList extends React.Component {
   static defaultProps = {
     onPressMessage: () => {}
   };
@@ -74,7 +74,7 @@ export default class MessageList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    overflow: "visible" // Prevents clipping on resize! },
+    overflow: "visible"
   },
   messageRow: {
     flexDirection: "row",
@@ -104,3 +104,5 @@ const styles = StyleSheet.create({
     borderRadius: 10
   }
 });
+
+export default MessageList;
