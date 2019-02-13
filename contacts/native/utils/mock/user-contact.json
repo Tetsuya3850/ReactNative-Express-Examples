@@ -1,0 +1,52 @@
+{
+  "results": [
+    {
+      "gender": "male",
+      "name": { "title": "mr", "first": "wayne", "last": "cox" },
+      "location": {
+        "street": "3856 new road",
+        "city": "trim",
+        "state": "kildare",
+        "postcode": 46645,
+        "coordinates": {
+          "latitude": "23.5084",
+          "longitude": "-80.6193"
+        },
+        "timezone": {
+          "offset": "+5:00",
+          "description": "Ekaterinburg, Islamabad, Karachi, Tashkent"
+        }
+      },
+      "email": "wayne.cox@example.com",
+      "login": {
+        "uuid": "f2a67e66-c503-4c67-b8c6-152820d82846",
+        "username": "silvergorilla185",
+        "password": "laurent",
+        "salt": "WvdmWzBm",
+        "md5": "4bd39339a0f4d87d11e17fe5e92a1ea3",
+        "sha1": "710ea40a125c70496515c0f78253037b60a32cea",
+        "sha256":
+          "cd5e267306be2a984934eeb27296fd36202df27c698d53fefafa1ad70fa191c6"
+      },
+      "dob": { "date": "1963-07-09T23:13:12Z", "age": 55 },
+      "registered": { "date": "2004-10-09T18:50:07Z", "age": 14 },
+      "phone": "021-085-1534",
+      "cell": "081-299-0757",
+      "id": { "name": "PPS", "value": "0873855T" },
+      "picture": {
+        "large": "https://randomuser.me/api/portraits/men/55.jpg",
+        "medium":
+          "https://randomuser.me/api/portraits/med/men/55.jpg",
+        "thumbnail":
+          "https://randomuser.me/api/portraits/thumb/men/55.jpg"
+      },
+      "nat": "IE"
+    }
+  ],
+  "info": {
+    "seed": "fullstackio",
+    "results": 1,
+    "page": 1,
+    "version": "1.2"
+  }
+}

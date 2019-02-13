@@ -1,0 +1,56 @@
+{
+  "results": [
+    {
+      "gender": "female",
+      "name": {
+        "title": "mrs",
+        "first": "amelia",
+        "last": "jean-baptiste"
+      },
+      "location": {
+        "street": "7832 concession road 6",
+        "city": "elgin",
+        "state": "saskatchewan",
+        "postcode": "I7N 0H9",
+        "coordinates": {
+          "latitude": "-67.0816",
+          "longitude": "17.9936"
+        },
+        "timezone": {
+          "offset": "+6:00",
+          "description": "Almaty, Dhaka, Colombo"
+        }
+      },
+      "email": "amelia.jean-baptiste@example.com",
+      "login": {
+        "uuid": "166cc54e-1e54-4d1d-88ae-46acb8ea0a3c",
+        "username": "tinyfish478",
+        "password": "mustang1",
+        "salt": "6ws2f2pH",
+        "md5": "8891edb97cd881e5d5babf4d98924fdd",
+        "sha1": "47f5009c147ce9db9687baf8aa73108fec0865a0",
+        "sha256":
+          "3e6fb00168b6b026d10aa955b1a379aa6a76e731e758b907779226f202aa4305"
+      },
+      "dob": { "date": "1979-02-05T14:47:41Z", "age": 39 },
+      "registered": { "date": "2014-06-29T18:35:53Z", "age": 4 },
+      "phone": "586-062-7171",
+      "cell": "937-157-6710",
+      "id": { "name": "", "value": null },
+      "picture": {
+        "large": "https://randomuser.me/api/portraits/women/68.jpg",
+        "medium":
+          "https://randomuser.me/api/portraits/med/women/68.jpg",
+        "thumbnail":
+          "https://randomuser.me/api/portraits/thumb/women/68.jpg"
+      },
+      "nat": "CA"
+    }
+  ],
+  "info": {
+    "seed": "cc559b9c7aeacba7",
+    "results": 1,
+    "page": 1,
+    "version": "1.2"
+  }
+}
